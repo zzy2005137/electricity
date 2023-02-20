@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from "vue";
+import Router from "vue-router";
 
-Vue.use(Router)
+Vue.use(Router);
 
 /* Layout */
-import Layout from '@/layout'
+import Layout from "@/layout";
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -32,74 +32,87 @@ import Layout from '@/layout'
  */
 export const constantRoutes = [
   {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
+    path: "/login",
+    component: () => import("@/views/login/index"),
+    hidden: true,
   },
 
   {
-    path: '/404',
-    component: () => import('@/views/404'),
-    hidden: true
+    path: "/404",
+    component: () => import("@/views/404"),
+    hidden: true,
   },
 
   {
-    path: '/',
+    path: "/",
     component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '实验室基本信息', icon: 'dashboard' }
-    }]
-  },
-
-  {
-    path: '/device',
-    component: Layout,
-    redirect: '/device/machine',
-    name: 'Machine',
-    meta: { title: '设备管理', icon: 'el-icon-s-help' },
+    redirect: "/dashboard",
     children: [
       {
-        path: 'machine',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: '检测工位信息', icon: 'table' }
+        path: "dashboard",
+        name: "Dashboard",
+        component: () => import("@/views/dashboard/index"),
+        meta: { title: "首页", icon: "dashboard" },
       },
-      {
-        path: 'station',
-        name: 'Station',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '检测设备信息', icon: 'tree' }
-      }
-    ]
+    ],
   },
+
+  // {
+  //   path: "/device",
+  //   component: Layout,
+  //   redirect: "/device/machine",
+  //   name: "Machine",
+  //   meta: { title: "设备管理", icon: "el-icon-s-help" },
+  //   children: [
+  //     {
+  //       path: "machine",
+  //       name: "Table",
+  //       component: () => import("@/views/table/index"),
+  //       meta: { title: "检测工位信息", icon: "table" },
+  //     },
+  //     {
+  //       path: "station",
+  //       name: "Station",
+  //       component: () => import("@/views/tree/index"),
+  //       meta: { title: "检测设备信息", icon: "tree" },
+  //     },
+  //   ],
+  // },
   {
-    path: '/task',
+    path: "/task",
     component: Layout,
     children: [
       {
-        path: 'index',
-        name: 'Task',
-        component: () => import('@/views/form/index'),
-        meta: { title: '检测任务', icon: 'form' }
-      }
-    ]
+        path: "index",
+        name: "Task",
+        component: () => import("@/views/tasks/index"),
+        meta: { title: "检测任务", icon: "form" },
+      },
+    ],
   },
 
   {
-    path: '/issue',
+    path: "/issue",
     component: Layout,
     children: [
       {
-        path: 'index',
-        name: 'Issue',
-        component: () => import('@/views/issue/index'),
-        meta: { title: '检测质量问题', icon: 'form' }
-      }
-    ]
+        path: "index",
+        name: "Issue",
+        component: () => import("@/views/issue/index"),
+        meta: { title: "检测质量问题", icon: "form" },
+      },
+    ],
+  },
+
+  {
+    path: "external-link",
+    component: Layout,
+    children: [
+      {
+        path: "http://139.196.110.174:8080/#/",
+        meta: { title: "区块链数据", icon: "link" },
+      },
+    ],
   },
 
   // {
@@ -161,33 +174,23 @@ export const constantRoutes = [
   //   ]
   // },
 
-  // {
-  //   path: 'external-link',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-  //       meta: { title: 'External Link', icon: 'link' }
-  //     }
-  //   ]
-  // },
-
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
-]
+  { path: "*", redirect: "/404", hidden: true },
+];
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
-})
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes,
+  });
 
-const router = createRouter()
+const router = createRouter();
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
+  const newRouter = createRouter();
+  router.matcher = newRouter.matcher; // reset router
 }
 
-export default router
+export default router;

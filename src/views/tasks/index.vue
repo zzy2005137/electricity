@@ -13,30 +13,20 @@
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="机构">
+      <el-table-column label="检测机构">
         <template slot-scope="scope">
           {{ scope.row.district_id == 1 ? "省中心（电科院）" : "" }}
         </template>
       </el-table-column>
-      <el-table-column label="工位名称">
-        <template slot-scope="scope">
-          {{ scope.row.station }}
-        </template>
-      </el-table-column>
-      <el-table-column label="物资类别">
+      <el-table-column label="物资品类">
         <template slot-scope="scope">
           {{ scope.row.type }}
-        </template>
-      </el-table-column>
-      <el-table-column label="试验名称">
-        <template slot-scope="scope">
-          {{ scope.row.experiment_name }}
         </template>
       </el-table-column>
 
       <el-table-column
         class-name="status-col"
-        label="状态"
+        label="任务状态"
         width="110"
         align="center"
       >
@@ -47,21 +37,27 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="问题类型">
-        <template slot-scope="scope">
-          {{ scope.row.description }}
-        </template>
-      </el-table-column>
       <el-table-column
         align="center"
         prop="created_at"
-        label="发生时间"
+        label="更新时间"
         width="200"
       >
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.updatetime }}</span>
         </template>
+      </el-table-column>
+
+      <el-table-column label="试验集合">
+        <el-button
+          :v-if="show"
+          type="edit"
+          size="mini"
+          @click="dialogVisibleExperiments = true"
+        >
+          点击展开
+        </el-button>
       </el-table-column>
       <el-table-column label="上链信息">
         <el-button
@@ -89,7 +85,6 @@
         >
           <p>交易ID：{{ activity.transaction_id }}</p>
           <p>数据哈希：{{ activity.data_hash }}</p>
-          <p>状态变更：{{ activity.status }}</p>
         </el-timeline-item>
       </el-timeline>
 
@@ -99,6 +94,65 @@
           >确 定</el-button
         >
       </span>
+    </el-dialog>
+
+    <el-dialog
+      title="试验集合"
+      :visible.sync="dialogVisibleExperiments"
+      :before-close="handleClose"
+    >
+      <el-table
+        v-loading="listLoading"
+        :data="experiments"
+        fit
+        highlight-current-row
+      >
+        <el-table-column align="center" label="ID" width="95">
+          <template slot-scope="scope">
+            {{ scope.$index }}
+          </template>
+        </el-table-column>
+        <el-table-column label="任务id">
+          <template slot-scope="scope">
+            {{ scope.row.id }}
+          </template>
+        </el-table-column>
+        <el-table-column label="试验名称">
+          <template slot-scope="scope">
+            {{ scope.row.e_name }}
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          class-name="status-col"
+          label="试验结果"
+          align="center"
+        >
+          <template slot-scope="scope">
+            <el-tag :type="scope.row.status | statusFilter">{{
+              scope.row.conclusion
+            }}</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" prop="created_at" label="更新时间">
+          <template slot-scope="scope">
+            <i class="el-icon-time" />
+            <span>{{ scope.row.update_at }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="上链信息">
+          <el-button
+            :v-if="show"
+            type="primary"
+            size="mini"
+            @click="dialogVisible = true"
+          >
+            查看详情
+          </el-button>
+        </el-table-column>
+      </el-table>
     </el-dialog>
   </div>
 </template>
@@ -134,26 +188,39 @@ export default {
         },
       ],
       dialogVisible: false,
+      dialogVisibleExperiments: false,
       list: [
         {
           district_id: 1, // 机构
-          experiment_name: "耐压试验", // 试验名称
-          status: "待解决",
+          status: "待检",
           type: "低压开关柜",
-          description: "操作不规范",
           updatetime: "2022-11-11 19:13",
-          station: "A1",
-          transaction_id: "asifhwoigaewjiofgasg",
         },
         {
           district_id: 1, // 机构
-          experiment_name: "耐压试验", // 试验名称
-          status: "待解决",
-          type: "低压开关柜",
-          description: "操作不规范",
+          status: "在检",
+          type: "电力电缆",
           updatetime: "2022-11-11 19:13",
-          station: "A1",
-          transaction_id: "asifhwoigaewjiofgasg",
+        },
+      ],
+      experiments: [
+        {
+          e_name: "主回路交流耐压试验",
+          id: "202185",
+          update_at: "2022-11-11 19:33",
+          conclusion: "合格",
+        },
+        {
+          e_name: "温升试验",
+          id: "212085",
+          update_at: "2022-11-11 19:33",
+          conclusion: "合格",
+        },
+        {
+          e_name: "介质损耗试验",
+          id: "212085",
+          update_at: "2022-11-11 19:33",
+          conclusion: "合格",
         },
       ],
       listLoading: false,
