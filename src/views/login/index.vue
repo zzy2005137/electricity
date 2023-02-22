@@ -16,6 +16,7 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
+
         <el-input
           ref="username"
           v-model="loginForm.username"
@@ -101,6 +102,16 @@ export default {
       loading: false,
       passwordType: "password",
       redirect: undefined,
+      accountList: [
+        {
+          accountId: "465152",
+          userName: "管理员",
+        },
+        {
+          accountId: "465151",
+          userName: "普通用户",
+        },
+      ],
     };
   },
   watch: {

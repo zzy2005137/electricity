@@ -12,20 +12,15 @@
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="实验室名称" prop="name"> </el-table-column>
-      <el-table-column label="成立时间" prop="build_at"> </el-table-column>
-      <el-table-column label="设备检测能力A级" prop="device_a">
+      <el-table-column label="机构" prop="district_id"> </el-table-column>
+      <el-table-column label="设备ID" prop="device_no"> </el-table-column>
+      <el-table-column label="工位编号" prop="station_token"> </el-table-column>
+      <el-table-column label="型号" prop="model_number"> </el-table-column>
+      <el-table-column label="资产编号" prop="zcbh"> </el-table-column>
+      <el-table-column label="生产厂家" prop="company"> </el-table-column>
+      <el-table-column label="可检试验项目" prop="experiment_ids">
       </el-table-column>
-      <el-table-column label="设备检测能力B级" prop="device_b">
-      </el-table-column>
-      <el-table-column label="设备检测能力C级" prop="device_c">
-      </el-table-column>
-      <el-table-column label="材料检测能力A级" prop="material_a">
-      </el-table-column>
-      <el-table-column label="材料检测能力B级" prop="material_b">
-      </el-table-column>
-      <el-table-column label="材料检测能力C级" prop="material_c">
-      </el-table-column>
+      <el-table-column label="创建时间" prop="createtime"> </el-table-column>
       <el-table-column label="上链信息">
         <el-button
           :v-if="show"
@@ -93,44 +88,34 @@ export default {
       listLoading: false,
       labInfo: [
         {
-          name: "苏北分中心",
-          build_at: "2017-12-01",
-          device_a: "13",
-          device_b: "17",
-          device_c: "0",
-          material_a: "13",
-          material_b: "17",
-          material_c: "0",
+          district_id: "省中心（电科院）",
+          device_no: "46",
+          station_token: "A6",
+          model_number: "TM2-008",
+          company: "上海思创电力设备有限公司",
+          createtime: "2022-01-14 19:22",
+          experiment_ids: "19,18,3,10",
+          zcbh: "F1181101",
         },
         {
-          name: "苏南分中心",
-          build_at: "2017-12-01",
-          device_a: "13",
-          device_b: "17",
-          device_c: "0",
-          material_a: "13",
-          material_b: "17",
-          material_c: "0",
+          district_id: "省中心（电科院）",
+          device_no: "46",
+          station_token: "A6",
+          model_number: "TM2-008",
+          company: "上海思创电力设备有限公司",
+          createtime: "2022-01-14 19:22",
+          experiment_ids: "19,18,3,10",
+          zcbh: "F1181101",
         },
         {
-          name: "苏中分中心",
-          build_at: "2017-12-01",
-          device_a: "13",
-          device_b: "17",
-          device_c: "0",
-          material_a: "13",
-          material_b: "17",
-          material_c: "0",
-        },
-        {
-          name: "省中心（电科院）",
-          build_at: "2017-12-01",
-          device_a: "13",
-          device_b: "17",
-          device_c: "0",
-          material_a: "13",
-          material_b: "17",
-          material_c: "0",
+          district_id: "省中心（电科院）",
+          device_no: "46",
+          station_token: "A6",
+          model_number: "TM2-008",
+          company: "上海思创电力设备有限公司",
+          createtime: "2022-01-14 19:22",
+          experiment_ids: "19,18,3,10",
+          zcbh: "F1181101",
         },
       ],
     };

@@ -52,32 +52,32 @@ export const constantRoutes = [
         path: "dashboard",
         name: "Dashboard",
         component: () => import("@/views/dashboard/index"),
-        meta: { title: "首页", icon: "dashboard" },
+        meta: { title: "实验室基本信息", icon: "dashboard" },
       },
     ],
   },
 
-  // {
-  //   path: "/device",
-  //   component: Layout,
-  //   redirect: "/device/machine",
-  //   name: "Machine",
-  //   meta: { title: "设备管理", icon: "el-icon-s-help" },
-  //   children: [
-  //     {
-  //       path: "machine",
-  //       name: "Table",
-  //       component: () => import("@/views/table/index"),
-  //       meta: { title: "检测工位信息", icon: "table" },
-  //     },
-  //     {
-  //       path: "station",
-  //       name: "Station",
-  //       component: () => import("@/views/tree/index"),
-  //       meta: { title: "检测设备信息", icon: "tree" },
-  //     },
-  //   ],
-  // },
+  {
+    path: "/device",
+    component: Layout,
+    redirect: "/device/machine",
+    name: "Machine",
+    meta: { title: "设备管理", icon: "el-icon-s-help" },
+    children: [
+      {
+        path: "machine",
+        name: "Table",
+        component: () => import("@/views/device/station/index"),
+        meta: { title: "检测工位信息", icon: "table" },
+      },
+      {
+        path: "station",
+        name: "Station",
+        component: () => import("@/views/device/station/index"),
+        meta: { title: "检测设备信息", icon: "tree" },
+      },
+    ],
+  },
   {
     path: "/task",
     component: Layout,
@@ -109,73 +109,65 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: "http://139.196.110.174:8080/#/",
-        meta: { title: "区块链数据", icon: "link" },
+        path: "http://139.196.110.174:8080/#/blocks",
+        meta: { title: "完整区块数据", icon: "link" },
       },
     ],
   },
 
-  // {
-  //   path: '/nested',
-  //   component: Layout,
-  //   redirect: '/nested/menu1',
-  //   name: 'Nested',
-  //   meta: {
-  //     title: 'Nested',
-  //     icon: 'nested'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'menu1',
-  //       component: () => import('@/views/nested/menu1/index'), // Parent router-view
-  //       name: 'Menu1',
-  //       meta: { title: 'Menu1' },
-  //       children: [
-  //         {
-  //           path: 'menu1-1',
-  //           component: () => import('@/views/nested/menu1/menu1-1'),
-  //           name: 'Menu1-1',
-  //           meta: { title: 'Menu1-1' }
-  //         },
-  //         {
-  //           path: 'menu1-2',
-  //           component: () => import('@/views/nested/menu1/menu1-2'),
-  //           name: 'Menu1-2',
-  //           meta: { title: 'Menu1-2' },
-  //           children: [
-  //             {
-  //               path: 'menu1-2-1',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-  //               name: 'Menu1-2-1',
-  //               meta: { title: 'Menu1-2-1' }
-  //             },
-  //             {
-  //               path: 'menu1-2-2',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-  //               name: 'Menu1-2-2',
-  //               meta: { title: 'Menu1-2-2' }
-  //             }
-  //           ]
-  //         },
-  //         {
-  //           path: 'menu1-3',
-  //           component: () => import('@/views/nested/menu1/menu1-3'),
-  //           name: 'Menu1-3',
-  //           meta: { title: 'Menu1-3' }
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       path: 'menu2',
-  //       component: () => import('@/views/nested/menu2/index'),
-  //       name: 'Menu2',
-  //       meta: { title: 'menu2' }
-  //     }
-  //   ]
-  // },
+  {
+    path: "/nested",
+    component: Layout,
+    redirect: "/nested/menu1",
+    name: "Nested",
+    meta: {
+      title: "权限管理",
+      icon: "nested",
+    },
+    children: [
+      {
+        path: "menu1",
+        component: () => import("@/views/permission/node/index"), // Parent router-view
+        name: "Menu1",
+        meta: { title: "区块链节点信息" },
+      },
+      {
+        path: "menu2",
+        component: () => import("@/views/permission/user/index"),
+        name: "Menu2",
+        meta: { title: "设备身份注册" },
+      },
+    ],
+  },
 
   // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true },
+];
+
+export const asyncRoutes = [
+  {
+    path: "/permission",
+    component: Layout,
+    redirect: "/permission/page",
+    alwaysShow: true, // will always show the root menu
+    name: "Permission",
+    meta: {
+      title: "Permission",
+      icon: "lock",
+      roles: ["admin", "editor"], // you can set roles in root nav
+    },
+    children: [
+      {
+        path: "page",
+        component: () => import("@/views/permission/node"),
+        name: "PagePermission",
+        meta: {
+          title: "Page Permission",
+          roles: ["admin"], // or you can only set roles in sub nav
+        },
+      },
+    ],
+  },
 ];
 
 const createRouter = () =>
