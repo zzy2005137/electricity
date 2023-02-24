@@ -67,14 +67,14 @@ export const constantRoutes = [
       {
         path: "machine",
         name: "Table",
-        component: () => import("@/views/device/station/index"),
-        meta: { title: "检测工位信息", icon: "table" },
+        component: () => import("@/views/device/machine/index"),
+        meta: { title: "检测设备信息", icon: "table" },
       },
       {
         path: "station",
         name: "Station",
         component: () => import("@/views/device/station/index"),
-        meta: { title: "检测设备信息", icon: "tree" },
+        meta: { title: "检测工位信息", icon: "tree" },
       },
     ],
   },
@@ -115,6 +115,36 @@ export const constantRoutes = [
     ],
   },
 
+  // 404 page must be placed at the end !!!
+  // { path: "*", redirect: "/404", hidden: true },
+];
+
+// 需要将原来constantRoutes中的`{ path: '*', redirect: '/404', hidden: true }`注释掉。
+// export const asyncRoutes = [
+//   {
+//     path: "/test",
+//     component: Layout,
+//     meta: { title: "Test", icon: "tree" },
+//     children: [
+//       {
+//         path: "test1",
+//         name: "test1",
+//         component: () => import("@/views/tree/index"),
+//         meta: { title: "test1", icon: "tree", roles: ["admin"] },
+//       },
+//       {
+//         path: "test2",
+//         name: "test2",
+//         component: () => import("@/views/tree/index"),
+//         meta: { title: "test2", icon: "tree", roles: ["editor"] },
+//       },
+//     ],
+//   },
+
+//   // 404 page must be placed at the end !!!
+//   { path: "*", redirect: "/404", hidden: true },
+// ];
+export const asyncRoutes = [
   {
     path: "/nested",
     component: Layout,
@@ -123,51 +153,24 @@ export const constantRoutes = [
     meta: {
       title: "权限管理",
       icon: "nested",
+      roles: ["admin", "editor"],
     },
     children: [
       {
         path: "menu1",
         component: () => import("@/views/permission/node/index"), // Parent router-view
         name: "Menu1",
-        meta: { title: "区块链节点信息" },
+        meta: { title: "区块链节点信息", roles: ["admin"] },
       },
       {
         path: "menu2",
         component: () => import("@/views/permission/user/index"),
         name: "Menu2",
-        meta: { title: "设备身份注册" },
+        meta: { title: "设备身份注册", roles: ["editor"] },
       },
     ],
   },
-
-  // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true },
-];
-
-export const asyncRoutes = [
-  {
-    path: "/permission",
-    component: Layout,
-    redirect: "/permission/page",
-    alwaysShow: true, // will always show the root menu
-    name: "Permission",
-    meta: {
-      title: "Permission",
-      icon: "lock",
-      roles: ["admin", "editor"], // you can set roles in root nav
-    },
-    children: [
-      {
-        path: "page",
-        component: () => import("@/views/permission/node"),
-        name: "PagePermission",
-        meta: {
-          title: "Page Permission",
-          roles: ["admin"], // or you can only set roles in sub nav
-        },
-      },
-    ],
-  },
 ];
 
 const createRouter = () =>

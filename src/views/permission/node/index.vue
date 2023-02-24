@@ -76,7 +76,7 @@
         icon="el-icon-download"
         @click="handleDownload"
       >
-        导出
+        编辑
       </el-button>
     </div>
     <el-table
@@ -88,7 +88,7 @@
     >
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
       <el-table-column label="节点名称" prop="name"> </el-table-column>

@@ -15,11 +15,10 @@
       <el-table-column label="机构" prop="district_id"> </el-table-column>
       <el-table-column label="设备ID" prop="device_no"> </el-table-column>
       <el-table-column label="工位编号" prop="station_token"> </el-table-column>
+      <el-table-column label="设备名称" prop="name"> </el-table-column>
       <el-table-column label="型号" prop="model_number"> </el-table-column>
       <el-table-column label="资产编号" prop="zcbh"> </el-table-column>
       <el-table-column label="生产厂家" prop="company"> </el-table-column>
-      <el-table-column label="可检试验项目" prop="experiment_ids">
-      </el-table-column>
       <el-table-column label="创建时间" prop="createtime"> </el-table-column>
       <el-table-column label="上链信息">
         <el-button
@@ -96,6 +95,7 @@ export default {
           createtime: "2022-01-14 19:22",
           experiment_ids: "19,18,3,10",
           zcbh: "F1181101",
+          name: "三相变频电源模块",
         },
         {
           district_id: "省中心（电科院）",
@@ -106,6 +106,7 @@ export default {
           createtime: "2022-01-14 19:22",
           experiment_ids: "19,18,3,10",
           zcbh: "F1181101",
+          name: "变压器测量切换线模块",
         },
         {
           district_id: "省中心（电科院）",
@@ -116,6 +117,7 @@ export default {
           createtime: "2022-01-14 19:22",
           experiment_ids: "19,18,3,10",
           zcbh: "F1181101",
+          name: "电压电流测试仪",
         },
       ],
     };

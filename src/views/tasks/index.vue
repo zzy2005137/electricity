@@ -1,5 +1,25 @@
 <template>
   <div class="app-container">
+    <!-- 搜索框 -->
+    <div class="filter-container">
+      <el-input
+        v-model="listQuery.title"
+        placeholder="搜索"
+        style="width: 300px"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-button
+        v-waves
+        class="filter-item"
+        type="primary"
+        icon="el-icon-search"
+        @click="handleFilter"
+      >
+        搜索
+      </el-button>
+    </div>
+
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -10,7 +30,7 @@
     >
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.$index + 1 }}
         </template>
       </el-table-column>
       <el-table-column label="检测机构">
@@ -173,6 +193,7 @@ export default {
   },
   data() {
     return {
+      listQuery: {},
       activities: [
         {
           transaction_id:
@@ -251,3 +272,13 @@ export default {
   },
 };
 </script>
+<style scoped>
+.filter-container {
+  padding: 1rem;
+  /* display: flex;
+  justify-content: right; */
+}
+.filter-container .el-input {
+  margin-right: 1rem;
+}
+</style>

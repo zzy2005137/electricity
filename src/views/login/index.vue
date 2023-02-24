@@ -16,7 +16,6 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-
         <el-input
           ref="username"
           v-model="loginForm.username"
@@ -59,8 +58,8 @@
       >
 
       <div class="tips">
-        <span style="margin-right: 20px">username: admin</span>
-        <span> password: any</span>
+        <span style="margin-right: 20px">用户名: admin / editor</span>
+        <span> 密码: 任意</span>
       </div>
     </el-form>
   </div>
@@ -102,16 +101,6 @@ export default {
       loading: false,
       passwordType: "password",
       redirect: undefined,
-      accountList: [
-        {
-          accountId: "465152",
-          userName: "管理员",
-        },
-        {
-          accountId: "465151",
-          userName: "普通用户",
-        },
-      ],
     };
   },
   watch: {
