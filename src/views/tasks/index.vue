@@ -1,14 +1,64 @@
 <template>
   <div class="app-container">
-    <!-- 搜索框 -->
     <div class="filter-container">
       <el-input
-        v-model="listQuery.title"
-        placeholder="搜索"
-        style="width: 300px"
+        v-model="listQuery.type"
+        placeholder="任务ID"
+        style="width: 200px"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
+      <!-- <el-input
+        v-model="listQuery.device_no"
+        placeholder="设备ID"
+        style="width: 200px"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      /> -->
+      <!-- <el-select
+        v-model="listQuery."
+        placeholder="ID"
+        clearable
+        style="width: 90px"
+        class="filter-item"
+      >
+        <el-option
+          v-for="item in importanceOptions"
+          :key="item"
+          :label="item"
+          :value="item"
+        />
+      </el-select> -->
+      <el-select
+        v-model="listQuery.status"
+        placeholder="检测状态"
+        clearable
+        class="filter-item"
+        style="width: 130px"
+        @change="handleFilter"
+      >
+        <el-option
+          v-for="item in queryOptions.statusOptions"
+          :key="item"
+          :label="item"
+          :value="item"
+        />
+      </el-select>
+      <el-select
+        v-model="listQuery.district"
+        placeholder="检测机构"
+        clearable
+        style="width: 140px"
+        class="filter-item"
+        @change="handleFilter"
+      >
+        <el-option
+          v-for="item in queryOptions.districtOptions"
+          :key="item"
+          :label="item"
+          :value="item"
+        />
+      </el-select>
       <el-button
         v-waves
         class="filter-item"
@@ -17,6 +67,25 @@
         @click="handleFilter"
       >
         搜索
+      </el-button>
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px"
+        type="success"
+        icon="el-icon-plus"
+        @click="addNodedialogVisible = true"
+      >
+        添加
+      </el-button>
+      <el-button
+        v-waves
+        :loading="downloadLoading"
+        class="filter-item"
+        type="warning"
+        icon="el-icon-edit"
+        @click="handleDownload"
+      >
+        编辑
       </el-button>
     </div>
 
@@ -204,10 +273,12 @@ export default {
           timestamp: "2022-12-10T10:47:02.653Z",
         },
         {
-          transaction_id: "adlfgkakerhgaasdgaehjgfkytlkg",
-          data_hash: "alskjdfhkaweghajrtyjtryjrtwg",
-          status: "已排查",
-          timestamp: "2018-04-15 11:56 ***",
+          transaction_id:
+            "0fa5db699d9f8aed7c75b478b2876a37bdbd0a5b819f4b9b52c6c8d63a1d2eb3",
+          data_hash:
+            "	06120358e39a1ee7dd29dcc77f48cc4444741df07c0381e24f4a240b600cf179",
+          status: "已解决",
+          timestamp: "2022-12-11T10:47:02.653Z",
         },
       ],
       dialogVisible: false,
@@ -247,6 +318,21 @@ export default {
         },
       ],
       listLoading: false,
+      listQuery: {
+        status: "",
+        type: "",
+        district: "",
+      },
+      queryOptions: {
+        districtOptions: [
+          "苏北分中心",
+          "苏南分中心",
+          "苏中分中心",
+          "省中心（电科院）",
+        ],
+        statusOptions: ["已检", "待检", "在检"],
+        type: ["低压开关柜", "电力电缆"],
+      },
     };
   },
   methods: {
@@ -272,13 +358,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.filter-container {
-  padding: 1rem;
-  /* display: flex;
-  justify-content: right; */
-}
-.filter-container .el-input {
-  margin-right: 1rem;
-}
-</style>

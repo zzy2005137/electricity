@@ -1,5 +1,93 @@
 <template>
   <div class="app-container">
+    <div class="filter-container">
+      <el-input
+        v-model="listQuery.name"
+        placeholder="设备名称"
+        style="width: 200px"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-input
+        v-model="listQuery.device_no"
+        placeholder="设备ID"
+        style="width: 200px"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <!-- <el-select
+        v-model="listQuery."
+        placeholder="ID"
+        clearable
+        style="width: 90px"
+        class="filter-item"
+      >
+        <el-option
+          v-for="item in importanceOptions"
+          :key="item"
+          :label="item"
+          :value="item"
+        />
+      </el-select> -->
+      <el-select
+        v-model="listQuery.station_token"
+        placeholder="工位编号"
+        clearable
+        class="filter-item"
+        style="width: 130px"
+        @change="handleFilter"
+      >
+        <el-option
+          v-for="item in queryOptions.stationOptions"
+          :key="item"
+          :label="item"
+          :value="item"
+        />
+      </el-select>
+      <el-select
+        v-model="listQuery.district"
+        placeholder="所属机构"
+        clearable
+        style="width: 140px"
+        class="filter-item"
+        @change="handleFilter"
+      >
+        <el-option
+          v-for="item in queryOptions.districtOptions"
+          :key="item"
+          :label="item"
+          :value="item"
+        />
+      </el-select>
+      <el-button
+        v-waves
+        class="filter-item"
+        type="primary"
+        icon="el-icon-search"
+        @click="handleFilter"
+      >
+        搜索
+      </el-button>
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px"
+        type="success"
+        icon="el-icon-plus"
+        @click="addNodedialogVisible = true"
+      >
+        添加
+      </el-button>
+      <el-button
+        v-waves
+        :loading="downloadLoading"
+        class="filter-item"
+        type="warning"
+        icon="el-icon-edit"
+        @click="handleDownload"
+      >
+        编辑
+      </el-button>
+    </div>
     <el-table
       v-loading="listLoading"
       :data="labInfo"
@@ -120,9 +208,52 @@ export default {
           name: "电压电流测试仪",
         },
       ],
+      listQuery: {
+        name: "",
+        district: "",
+        station_token: "",
+        device_no: "",
+      },
+      queryOptions: {
+        districtOptions: [
+          "苏北分中心",
+          "苏南分中心",
+          "苏中分中心",
+          "省中心（电科院）",
+        ],
+        stationOptions: ["46", "48"],
+      },
     };
   },
+  // computed: {
+  //   queryOptions() {
+  //     let districtOptions = this.createOptions("district");
+  //     let typeOptions = this.createOptions("type");
+  //     return {
+  //       districtOptions,
+  //       typeOptions,
+  //     };
+  //   },
+  // },
   methods: {
+    handleFilter() {
+      console.log("handleFilter");
+      let { name, station_token, district, device_no } = this.listQuery;
+      this.filterLabInfo = this.labInfo.filter((item) => {
+        if (name && item.name.indexOf(name) < 0) return false;
+        if (device_no && item.device_no.indexOf(device_no) < 0) return false;
+        if (district && item.district !== district) return false;
+        if (station_token && item.station_token !== station_token) return false;
+        return true;
+      });
+    },
+    createOptions(key) {
+      let optionSet = new Set();
+      this.labInfo.forEach((obj) => {
+        optionSet.add(obj[key]);
+      });
+      return Array.from(optionSet);
+    },
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then((_) => {
@@ -130,11 +261,6 @@ export default {
         })
         .catch((_) => {});
     },
-  },
-  created() {
-    // this.fetchData();
-  },
-  methods: {
     fetchData() {
       this.listLoading = true;
       getList().then((response) => {
@@ -142,6 +268,9 @@ export default {
         this.listLoading = false;
       });
     },
+  },
+  created() {
+    // this.fetchData();
   },
 };
 </script>

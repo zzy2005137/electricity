@@ -3,14 +3,14 @@
     <!-- 搜索框 -->
     <div class="filter-container">
       <el-input
-        v-model="listQuery.title"
+        v-model="listQuery.name"
         placeholder="节点名称"
         style="width: 200px"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-      <el-select
-        v-model="listQuery.importance"
+      <!-- <el-select
+        v-model="listQuery."
         placeholder="ID"
         clearable
         style="width: 90px"
@@ -22,32 +22,35 @@
           :label="item"
           :value="item"
         />
-      </el-select>
+      </el-select> -->
       <el-select
         v-model="listQuery.type"
-        placeholder="类型"
+        placeholder="节点类型"
         clearable
         class="filter-item"
         style="width: 130px"
+        @change="handleFilter"
       >
         <el-option
-          v-for="item in calendarTypeOptions"
-          :key="item.key"
-          :label="item.display_name + '(' + item.key + ')'"
-          :value="item.key"
+          v-for="item in queryOptions.typeOptions"
+          :key="item"
+          :label="item"
+          :value="item"
         />
       </el-select>
       <el-select
-        v-model="listQuery.sort"
+        v-model="listQuery.district"
+        placeholder="所属机构"
+        clearable
         style="width: 140px"
         class="filter-item"
         @change="handleFilter"
       >
         <el-option
-          v-for="item in sortOptions"
-          :key="item.key"
-          :label="item.label"
-          :value="item.key"
+          v-for="item in queryOptions.districtOptions"
+          :key="item"
+          :label="item"
+          :value="item"
         />
       </el-select>
       <el-button
@@ -62,9 +65,9 @@
       <el-button
         class="filter-item"
         style="margin-left: 10px"
-        type="primary"
-        icon="el-icon-edit"
-        @click="handleCreate"
+        type="success"
+        icon="el-icon-plus"
+        @click="addNodedialogVisible = true"
       >
         添加
       </el-button>
@@ -72,16 +75,17 @@
         v-waves
         :loading="downloadLoading"
         class="filter-item"
-        type="primary"
-        icon="el-icon-download"
+        type="warning"
+        icon="el-icon-edit"
         @click="handleDownload"
       >
         编辑
       </el-button>
     </div>
+    <!-- 节点列表 -->
     <el-table
       v-loading="listLoading"
-      :data="labInfo"
+      :data="filterLabInfo"
       border
       fit
       highlight-current-row
@@ -131,6 +135,16 @@
         >
       </span>
     </el-dialog>
+
+    <el-dialog title="添加新节点" :visible.sync="addNodedialogVisible">
+      <p>新节点表单</p>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addNodedialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addNodedialogVisible = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -152,12 +166,9 @@ export default {
   data() {
     return {
       listQuery: {
-        page: 1,
-        limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
-        sort: "机构",
+        name: "",
+        district: "",
+        type: "",
       },
       activities: [
         {
@@ -169,6 +180,7 @@ export default {
         },
       ],
       dialogVisible: false,
+      addNodedialogVisible: false,
       listLoading: false,
       labInfo: [
         {
@@ -214,9 +226,28 @@ export default {
           create_at: "2022-12-10T10:47:02.653Z",
         },
       ],
+      filterLabInfo: [],
     };
   },
+  computed: {
+    queryOptions() {
+      let districtOptions = this.createOptions("district");
+      let typeOptions = this.createOptions("type");
+      return {
+        districtOptions,
+        typeOptions,
+      };
+    },
+  },
   methods: {
+    createOptions(key) {
+      let optionSet = new Set();
+
+      this.labInfo.forEach((obj) => {
+        optionSet.add(obj[key]);
+      });
+      return Array.from(optionSet);
+    },
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then((_) => {
@@ -224,19 +255,21 @@ export default {
         })
         .catch((_) => {});
     },
+    handleFilter() {
+      console.log("handleFilter");
+      let { name, district, type } = this.listQuery;
+      this.filterLabInfo = this.labInfo.filter((item) => {
+        if (name && item.name.indexOf(name) < 0) return false;
+        if (district && item.district !== district) return false;
+        if (type && item.type !== type) return false;
+        return true;
+      });
+    },
   },
   created() {
     // this.fetchData();
+    this.handleFilter();
   },
 };
 </script>
 
-<style scoped>
-.filter-container {
-  margin-bottom: 1.5rem;
-}
-
-.filter-container * {
-  margin-right: 1rem;
-}
-</style>

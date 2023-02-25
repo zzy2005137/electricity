@@ -79,6 +79,18 @@ export const constantRoutes = [
     ],
   },
   {
+    path: "/staff",
+    component: Layout,
+    children: [
+      {
+        path: "index",
+        name: "Staff",
+        component: () => import("@/views/device/staff/index"),
+        meta: { title: "人员信息", icon: "tree" },
+      },
+    ],
+  },
+  {
     path: "/task",
     component: Layout,
     children: [
@@ -166,7 +178,7 @@ export const asyncRoutes = [
         path: "menu2",
         component: () => import("@/views/permission/user/index"),
         name: "Menu2",
-        meta: { title: "设备身份注册", roles: ["editor"] },
+        meta: { title: "设备身份注册", roles: ["editor", "admin"] },
       },
     ],
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <p v-if="!visible">设备身份注册表单</p>
-    <el-form v-if="visible" ref="form" :model="form" label-width="120px">
+    <el-form v-else ref="form" :model="form" label-width="120px">
       <el-form-item label="工位编号">
         <el-col :span="11"> <el-input v-model="form.工位编号" /></el-col>
       </el-form-item>
@@ -103,7 +103,7 @@ import { mapMutations } from "vuex";
 export default {
   data() {
     return {
-      visble: false,
+      visible: false,
       // form: {
       //   name: "",
       //   region: "",
