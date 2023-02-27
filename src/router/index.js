@@ -174,12 +174,12 @@ export const asyncRoutes = [
         name: "Menu1",
         meta: { title: "区块链节点信息", roles: ["admin"] },
       },
-      {
-        path: "menu2",
-        component: () => import("@/views/permission/user/index"),
-        name: "Menu2",
-        meta: { title: "设备身份注册", roles: ["editor", "admin"] },
-      },
+      // {
+      //   path: "menu2",
+      //   component: () => import("@/views/permission/user/index"),
+      //   name: "Menu2",
+      //   meta: { title: "设备身份注册", roles: ["editor", "admin"] },
+      // },
     ],
   },
   { path: "*", redirect: "/404", hidden: true },

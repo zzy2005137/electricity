@@ -73,7 +73,7 @@
         style="margin-left: 10px"
         type="success"
         icon="el-icon-plus"
-        @click="addNodedialogVisible = true"
+        @click="addDialogVisible = true"
       >
         添加
       </el-button>
@@ -143,13 +143,25 @@
         >
       </span>
     </el-dialog>
+    <el-dialog title="添加设备" :visible.sync="addDialogVisible">
+      <addForm></addForm>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addDialogVisible = false"
+          >设备注册</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { getList } from "@/api/table";
-
+import addForm from "./form.vue";
 export default {
+  components: {
+    addForm,
+  },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -172,6 +184,7 @@ export default {
         },
       ],
       dialogVisible: false,
+      addDialogVisible: false,
       listLoading: false,
       labInfo: [
         {
