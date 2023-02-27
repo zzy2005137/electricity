@@ -90,7 +90,7 @@
     </div>
     <el-table
       v-loading="listLoading"
-      :data="labInfo"
+      :data="machines"
       border
       fit
       highlight-current-row
@@ -143,14 +143,45 @@
         >
       </span>
     </el-dialog>
-    <el-dialog title="添加设备" :visible.sync="addDialogVisible">
-      <addForm></addForm>
-      <span slot="footer" class="dialog-footer">
+    <el-dialog title="添加工位" :visible.sync="addDialogVisible">
+      <el-form :model="form" label-width="100px" class="add-form">
+        <el-form-item label="检测机构">
+          <el-select v-model="form.district_id" class="filter-item">
+            <el-option
+              v-for="item in queryOptions.districtOptions"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="设备ID">
+          <el-input v-model="form.device_no"></el-input>
+        </el-form-item>
+        <el-form-item label="工位编号">
+          <el-input v-model="form.station_token"></el-input>
+        </el-form-item>
+        <el-form-item label="设备名称">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="型号">
+          <el-input v-model="form.model_number"></el-input>
+        </el-form-item>
+        <el-form-item label="资产编号">
+          <el-input v-model="form.zcbh"></el-input>
+        </el-form-item>
+        <el-form-item label="生产厂家">
+          <el-input v-model="form.company"></el-input>
+        </el-form-item>
+        <el-form-item class="dialog-footer">
+          <el-button type="primary" @click="addMachine">立即创建</el-button>
+          <el-button @click="addDialogVisible = false">取消</el-button>
+        </el-form-item>
+      </el-form>
+      <!-- <span slot="footer" class="dialog-footer">
         <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addDialogVisible = false"
-          >设备注册</el-button
-        >
-      </span>
+        <el-button type="primary" @click="addStation">确 定</el-button>
+      </span> -->
     </el-dialog>
   </div>
 </template>
@@ -186,7 +217,18 @@ export default {
       dialogVisible: false,
       addDialogVisible: false,
       listLoading: false,
-      labInfo: [
+      form: {
+        district_id: "省中心（电科院）",
+        device_no: "46",
+        station_token: "A6",
+        model_number: "TM2-008",
+        company: "上海思创电力设备有限公司",
+        createtime: "2022-01-14 19:22",
+        experiment_ids: "19,18,3,10",
+        zcbh: "F1181101",
+        name: "三相变频电源模块",
+      },
+      machines: [
         {
           district_id: "省中心（电科院）",
           device_no: "46",
@@ -249,10 +291,25 @@ export default {
   //   },
   // },
   methods: {
+    addMachine() {
+      this.form.createtime = new Date().toISOString();
+      let obj = { ...this.form };
+      this.machines.push(obj);
+      this.addDialogVisible = false;
+
+      this.$message({
+        message: "添加成功",
+        type: "success",
+      });
+    },
+    handleRegister() {
+      this.machines.push(this.machines[this.machines.length - 1]);
+      this.addDialogVisible = false;
+    },
     handleFilter() {
       console.log("handleFilter");
       let { name, station_token, district, device_no } = this.listQuery;
-      this.filterLabInfo = this.labInfo.filter((item) => {
+      this.filtermachines = this.machines.filter((item) => {
         if (name && item.name.indexOf(name) < 0) return false;
         if (device_no && item.device_no.indexOf(device_no) < 0) return false;
         if (district && item.district !== district) return false;
@@ -262,7 +319,7 @@ export default {
     },
     createOptions(key) {
       let optionSet = new Set();
-      this.labInfo.forEach((obj) => {
+      this.machines.forEach((obj) => {
         optionSet.add(obj[key]);
       });
       return Array.from(optionSet);

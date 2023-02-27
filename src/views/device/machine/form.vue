@@ -89,10 +89,10 @@
         <el-form-item label="Activity form">
           <el-input v-model="form.desc" type="textarea" />
         </el-form-item> -->
-      <!-- <el-form-item>
+      <el-form-item>
         <el-button type="primary" @click="onSubmit">设备注册</el-button>
         <el-button @click="onCancel">取消</el-button>
-      </el-form-item> -->
+      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -155,6 +155,7 @@ export default {
   },
   methods: {
     onSubmit() {
+      
       this.$message("注册成功");
       // console.log(sha256("sss"));
       this.$store.commit("identity/addIdentity", this.form);

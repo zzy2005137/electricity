@@ -62,7 +62,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: "/device/machine",
     name: "Machine",
-    meta: { title: "设备管理", icon: "el-icon-s-help" },
+    meta: { title: "全要素可信管理信息", icon: "el-icon-s-help" },
     children: [
       {
         path: "machine",
@@ -76,20 +76,15 @@ export const constantRoutes = [
         component: () => import("@/views/device/station/index"),
         meta: { title: "检测工位信息", icon: "tree" },
       },
-    ],
-  },
-  {
-    path: "/staff",
-    component: Layout,
-    children: [
       {
-        path: "index",
+        path: "staff",
         name: "Staff",
         component: () => import("@/views/device/staff/index"),
-        meta: { title: "人员信息", icon: "tree" },
+        meta: { title: "人员信息", icon: "user" },
       },
     ],
   },
+
   {
     path: "/task",
     component: Layout,
