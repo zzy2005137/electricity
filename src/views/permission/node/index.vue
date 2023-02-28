@@ -86,6 +86,7 @@
     <el-table
       v-loading="listLoading"
       :data="filterLabInfo"
+      
       border
       fit
       highlight-current-row
@@ -99,7 +100,7 @@
       <el-table-column label="节点类型" prop="type"> </el-table-column>
       <el-table-column label="所属机构" prop="district"> </el-table-column>
       <el-table-column label="节点URL" prop="url"> </el-table-column>
-      <el-table-column label="创建时间" prop="create_at"> </el-table-column>
+      <el-table-column label="创建时间" prop="createtime"> </el-table-column>
       <el-table-column label="证书信息">
         <el-button
           :v-if="show"
@@ -117,7 +118,7 @@
       :visible.sync="dialogVisible"
       :before-close="handleClose"
     >
-      <!-- <el-timeline :reverse="reverse">
+      <el-timeline :reverse="reverse">
         <el-timeline-item
           v-for="(activity, index) in activities"
           :key="index"
@@ -126,8 +127,11 @@
           <p>交易ID：{{ activity.transaction_id }}</p>
           <p>数据哈希：{{ activity.data_hash }}</p>
         </el-timeline-item>
-      </el-timeline> -->
+      </el-timeline>
+
       <p>证书信息</p>
+    
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false"
@@ -137,13 +141,89 @@
     </el-dialog>
 
     <el-dialog title="添加新节点" :visible.sync="addNodedialogVisible">
-      <p>新节点表单</p>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="addNodedialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addNodedialogVisible = false"
-          >确 定</el-button
+      <!-- <addForm></addForm> -->
+
+      <el-form  :model="form" label-width="120px" class="add-form">
+
+      <el-form-item label="节点名称">
+        <el-select
+          v-model="form.name"
+          placeholder="please select your zone"
         >
-      </span>
+          <el-option
+            v-for="item in peeroptions"
+            :key="item.key"
+            :label="item.label"
+            :value="item.value"
+          />
+          <!-- <el-option label="Zone two" value="beijing" /> -->
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="节点类型">
+        <el-select
+          v-model="form.type"
+          placeholder="please select your node_type"
+        >
+          <el-option
+            v-for="item in nodetype"
+            :key="item.key"
+            :label="item.label"
+            :value="item.value"
+          />
+          <!-- <el-option label="Zone two" value="beijing" /> -->
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="所属机构">
+        <el-select
+          v-model="form.district"
+          placeholder="please select your organization"
+        >
+          <el-option
+            v-for="item in organizations"
+            :key="item.key"
+            :label="item.label"
+            :value="item.value"
+          />
+          <!-- <el-option label="Zone two" value="beijing" /> -->
+        </el-select>
+      </el-form-item>
+
+      <!-- <el-form-item label="节点URL">
+        <el-select
+          v-model="form.节点URL"
+          placeholder="please select your url"
+        >
+          <el-option
+            v-for="item in URL"
+            :key="item.key"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </el-form-item> -->
+
+      <el-form-item label="节点URL">
+        <el-col :span="11"> <el-input v-model="form.url" /></el-col>
+      </el-form-item>
+
+      <el-form-item label="创建时间">
+        <el-col :span="11"> <el-input v-model="form.createtime"  /></el-col>
+      </el-form-item>
+
+      <el-form-item class="dialog-footer">
+        <el-button @click="addNodedialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addNode">立即创建</el-button>
+      </el-form-item>
+
+    </el-form>
+
+      <!-- <span slot="footer" class="dialog-footer">
+        <el-button @click="addNodedialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addNode">立即创建</el-button
+        >
+      </span> -->
     </el-dialog>
   </div>
 </template>
@@ -151,9 +231,10 @@
 <script>
 /* eslint-disable */
 import { getList } from "@/api/table";
+/* import addForm from "./form.vue";*/
 
 export default {
-  filters: {
+filters: {
     statusFilter(status) {
       const statusMap = {
         published: "success",
@@ -165,6 +246,55 @@ export default {
   },
   data() {
     return {
+
+      peeroptions:[{
+        value:"苏北分中心peer节点",
+        label:"苏北分中心peer节点"
+      },{
+        value:"苏南分中心peer节点",
+        label:"苏南分中心peer节点"
+      },{
+        value:"苏中分中心peer节点",
+        label:"苏中分中心peer节点"
+      },{
+        value:"省中心电科院peer节点",
+        label:"省中心电科院peer节点"
+      } ],
+
+      nodetype:[{
+        value:"PEER",
+        label:"PEER"
+      },{
+        value:"ORDER",
+        label:"ORDER"
+      }],
+
+      organizations:[{
+        value:"苏北分中心",
+        label:"苏北分中心"
+      },{
+        value:"苏南分中心",
+        label:"苏南分中心"
+      },{
+        value:"苏中分中心",
+        label:"苏中分中心"
+      },{
+        value:"省中心电科院",
+        label:"省中心电科院"
+      } ],
+
+      form: {
+        name: "省中心（电科院）",
+        type: '',
+        district: '',   
+        url: "peer1.org0.com",
+        createtime:"2023-02-27",
+        // 负责人: "宋思齐",
+        // 身份ID: "",
+        // // privateKey: `MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAg544VsNa20GxLA7UvzmvELY8t390Yc6+wgUQYaaNdefJChmtCHttvz9SOCk4OxkbB3xfFt+IWoFCW7jKtxD7fQIDAQABAkBQOLqsH2wcYaDkcrG3UChlLj45teSwzLu2NDH04vgr2VgDmo/2DHiKvHnF5pbxPob39nc9Kfk/RRlVRkIIy2YdAiEAupfYLrMvuNjUKQCAimo+qGQsZzJsg3uG4doLUF5Nve8CIQC0k2yVLTtCAgpb6kUp9+l5oHbN7669eAf0ESrLOcEJUwIgM+UVT++v/xX286xbE6P25zhtDQp+GZdabSgKa4C+2GsCIQCDDevkaKt1QJ3cD66awv6D813GIIoloJPFIyB31javWQIgFXqEpV7XK03IbXdHmOXSdhbOYr0B5iS3E8uHb+hT7io=`,
+        // 公钥: "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKZAtjhCrrUcpM7ZjLkxBRTovRTb3US0VpSVw2sU9MWBIvEuOvHPBeVcWK+HbSV/9ve+DgfrZ+C8heS4C0j09LUCAwEAAQ==",
+      },
+
       listQuery: {
         name: "",
         district: "",
@@ -188,42 +318,42 @@ export default {
           type: "PEER",
           district: "苏北分中心",
           url: "peer0.org1.com",
-          create_at: "2022-12-10T10:47:02.653Z",
+          createtime: "2022-12-10T10:47:02.653Z",
         },
         {
           name: "苏北分中心order节点",
           type: "ORDER",
           district: "苏北分中心",
           url: "order0.org1.com",
-          create_at: "2022-12-10T10:47:02.653Z",
+          createtime: "2022-12-10T10:47:02.653Z",
         },
         {
           name: "苏南分中心peer节点",
           type: "PEER",
           district: "苏南分中心",
           url: "peer0.org1.com",
-          create_at: "2022-12-10T10:47:02.653Z",
+          createtime: "2022-12-10T10:47:02.653Z",
         },
         {
           name: "苏中分中心order节点",
           type: "ORDER",
           district: "苏中分中心",
           url: "order0.org1.com",
-          create_at: "2022-12-10T10:47:02.653Z",
+          createtime: "2022-12-10T10:47:02.653Z",
         },
         {
           name: "省中心电科院peer节点",
           type: "PEER",
           district: "省中心电科院",
           url: "peer0.org1.com",
-          create_at: "2022-12-10T10:47:02.653Z",
+          createtime: "2022-12-10T10:47:02.653Z",
         },
         {
           name: "省中心电科院中心order节点",
           type: "ORDER",
           district: "省中心电科院",
           url: "order0.org1.com",
-          create_at: "2022-12-10T10:47:02.653Z",
+          createtime: "2022-12-10T10:47:02.653Z",
         },
       ],
       filterLabInfo: [],
@@ -240,6 +370,27 @@ export default {
     },
   },
   methods: {
+    addNode() {
+      this.form.createtime = new Date().toISOString();
+      let obj = { ...this.form };
+      this.labInfo.push(obj);
+      this.handleFilter();
+      this.addNodedialogVisible = false;
+
+      this.$message({
+        message: "添加成功",
+        type: "success",
+      });
+    },
+
+    fetchData() {
+      this.listLoading = true;
+      getList().then((response) => {
+        this.list = response.data.items;
+        this.listLoading = false;
+      });
+    },
+
     createOptions(key) {
       let optionSet = new Set();
 
@@ -266,6 +417,7 @@ export default {
       });
     },
   },
+
   created() {
     // this.fetchData();
     this.handleFilter();
@@ -273,3 +425,8 @@ export default {
 };
 </script>
 
+<style scoped>
+.add-form {
+  /* width: 60%; */
+}
+</style>
