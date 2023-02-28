@@ -79,12 +79,12 @@
         class="filter-item"
         style="margin-left: 10px"
         type="success"
-        icon="el-icon-plus"
+        icon="el-icon-refresh"
         @click="addNodedialogVisible = true"
       >
-        添加
+        刷新
       </el-button>
-      <el-button
+      <!-- <el-button
         v-waves
         :loading="downloadLoading"
         class="filter-item"
@@ -93,7 +93,7 @@
         @click="handleDownload"
       >
         编辑
-      </el-button>
+      </el-button> -->
     </div>
 
     <el-table

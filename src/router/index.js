@@ -62,7 +62,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: "/device/machine",
     name: "Machine",
-    meta: { title: "全要素可信管理信息", icon: "el-icon-s-help" },
+    meta: { title: "全要素可信管理", icon: "el-icon-s-help" },
     children: [
       {
         path: "machine",

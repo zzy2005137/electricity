@@ -72,20 +72,10 @@
         class="filter-item"
         style="margin-left: 10px"
         type="success"
-        icon="el-icon-plus"
+        icon="el-icon-refresh"
         @click="addNodedialogVisible = true"
       >
-        添加
-      </el-button>
-      <el-button
-        v-waves
-        :loading="downloadLoading"
-        class="filter-item"
-        type="warning"
-        icon="el-icon-edit"
-        @click="handleDownload"
-      >
-        编辑
+        刷新
       </el-button>
     </div>
 
@@ -174,6 +164,8 @@
         >
           <p>交易ID：{{ activity.transaction_id }}</p>
           <p>数据哈希：{{ activity.data_hash }}</p>
+          <p>状态变更：{{ activity.e_name }}</p>
+          <p>负责人：{{ activity.staff }}</p>
         </el-timeline-item>
       </el-timeline>
 
@@ -198,7 +190,7 @@
       >
         <el-table-column align="center" label="ID" width="95">
           <template slot-scope="scope">
-            {{ scope.$index }}
+            {{ scope.$index + 1 }}
           </template>
         </el-table-column>
         <el-table-column label="任务id">
@@ -230,7 +222,7 @@
             <span>{{ scope.row.update_at }}</span>
           </template>
         </el-table-column>
-
+        <!-- 
         <el-table-column label="上链信息">
           <el-button
             :v-if="show"
@@ -240,7 +232,7 @@
           >
             查看详情
           </el-button>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </el-dialog>
   </div>
@@ -271,6 +263,8 @@ export default {
             "	06120358e39a1ee7dd29dcc77f48cc4444741df07c0381e24f4a240b600cf179",
           status: "待解决",
           timestamp: "2022-12-10T10:47:02.653Z",
+          staff: "向非田",
+          e_name: "主回路交流耐压试验",
         },
         {
           transaction_id:
@@ -279,6 +273,8 @@ export default {
             "	06120358e39a1ee7dd29dcc77f48cc4444741df07c0381e24f4a240b600cf179",
           status: "已解决",
           timestamp: "2022-12-11T10:47:02.653Z",
+          staff: "马走日",
+          e_name: "介质损耗试验",
         },
       ],
       dialogVisible: false,
