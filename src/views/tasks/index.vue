@@ -104,7 +104,7 @@
       </el-table-column>
       <el-table-column label="检测机构">
         <template slot-scope="scope">
-          {{ scope.row.district_id == 1 ? "省中心（电科院）" : "" }}
+          {{ scope.row.district_id == 1 ? "省中心（电科院）" : "苏北分中心" }}
         </template>
       </el-table-column>
       <el-table-column label="物资品类">
@@ -112,6 +112,14 @@
           {{ scope.row.type }}
         </template>
       </el-table-column>
+
+       <el-table-column label="检测任务">
+        <template slot-scope="scope">
+          {{ scope.row.task }}
+        </template>
+      </el-table-column>
+
+      
 
       <el-table-column
         class-name="status-col"
@@ -288,13 +296,36 @@ export default {
           district_id: 1, // 机构
           status: "待检",
           type: "低压开关柜",
+          task: "雷电冲击实验",
           updatetime: "2022-11-11 19:13",
         },
         {
           district_id: 1, // 机构
           status: "在检",
           type: "电力电缆",
+          task: "PVC护套抗开裂实验",
           updatetime: "2022-11-11 19:13",
+        },
+        {
+          district_id: 1, // 机构
+          status: "在检",
+          type: "配电变压器",
+          task: "局部放电测量",
+          updatetime: "2022-11-11 19:13",
+        },
+        {
+          district_id:0, // 机构
+          status: "待检",
+          type: "电流互感器",
+          task: "短时电流实验",
+          updatetime: "2023-02-11 19:13",
+        },
+        {
+          district_id:0, // 机构
+          status: "待检",
+          type: "环网柜",
+          task: "单相接地故障真型实验",
+          updatetime: "2022-11-12 19:13",
         },
       ],
       experiments: [
@@ -316,6 +347,12 @@ export default {
           update_at: "2022-11-11 19:33",
           conclusion: "合格",
         },
+        {
+          e_name: "主回路电阻测试",
+          id: "220505",
+          update_at: "2022-11-11 19:33",
+          conclusion: "合格",
+        },
       ],
       listLoading: false,
       listQuery: {
@@ -332,6 +369,7 @@ export default {
         ],
         statusOptions: ["已检", "待检", "在检"],
         type: ["低压开关柜", "电力电缆"],
+        task: ["雷电冲击电压实验","温升实验","工频电压实验"],
       },
     };
   },

@@ -91,6 +91,7 @@
     <el-table
       v-loading="listLoading"
       :data="machines"
+     
       border
       fit
       highlight-current-row
@@ -100,14 +101,22 @@
           {{ scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column label="机构" prop="district_id"> </el-table-column>
+      <!-- <el-table-column label="机构" prop="district_id"> </el-table-column>
       <el-table-column label="设备ID" prop="device_no"> </el-table-column>
       <el-table-column label="工位编号" prop="station_token"> </el-table-column>
       <el-table-column label="设备名称" prop="name"> </el-table-column>
       <el-table-column label="型号" prop="model_number"> </el-table-column>
       <el-table-column label="资产编号" prop="zcbh"> </el-table-column>
       <el-table-column label="生产厂家" prop="company"> </el-table-column>
-      <el-table-column label="创建时间" prop="createtime"> </el-table-column>
+      <el-table-column label="创建时间" prop="createtime"> </el-table-column> -->
+      <el-table-column label="被检测设备名称" prop="name"> </el-table-column>
+      <el-table-column label="检测项目名称" prop="district_id"> </el-table-column>
+      <el-table-column label="依据的标准" prop="device_no"> </el-table-column>
+      <el-table-column label="标准编号(含年号)" prop="station_token"> </el-table-column>
+      <el-table-column label="检测工具" prop="zcbh"> </el-table-column>
+      <el-table-column label="工具型号/规格/等级" prop="model_number"> </el-table-column>
+      <el-table-column label="有效日期" prop="createtime"> </el-table-column>
+      <el-table-column label="确认结果" prop="company"> </el-table-column>
       <el-table-column label="上链信息">
         <el-button
           :v-if="show"
@@ -155,22 +164,24 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="设备ID">
-          <el-input v-model="form.device_no"></el-input>
-        </el-form-item>
-        <el-form-item label="工位编号">
-          <el-input v-model="form.station_token"></el-input>
-        </el-form-item>
-        <el-form-item label="设备名称">
+
+        <el-form-item label="被检测设备名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="型号">
+        <el-form-item label="依据的标准">
+          <el-input v-model="form.device_no"></el-input>
+        </el-form-item>
+        <el-form-item label="标准编号">
+          <el-input v-model="form.station_token"></el-input>
+        </el-form-item>
+        
+        <el-form-item label="工具型号">
           <el-input v-model="form.model_number"></el-input>
         </el-form-item>
-        <el-form-item label="资产编号">
+        <el-form-item label="检测工具">
           <el-input v-model="form.zcbh"></el-input>
         </el-form-item>
-        <el-form-item label="生产厂家">
+        <el-form-item label="确认结果">
           <el-input v-model="form.company"></el-input>
         </el-form-item>
         <el-form-item class="dialog-footer">
@@ -218,51 +229,87 @@ export default {
       addDialogVisible: false,
       listLoading: false,
       form: {
-        district_id: "省中心（电科院）",
-        device_no: "46",
-        station_token: "A6",
-        model_number: "TM2-008",
-        company: "上海思创电力设备有限公司",
-        createtime: "2022-01-14 19:22",
+        district_id: "省中心(电科院)",
+        device_no: "低压成套开关设备和控制设备",
+        station_token: "GB/T 7251.12.2013",
+        model_number: "AN9643M",
+        company: "合格",
+        createtime: "/",
         experiment_ids: "19,18,3,10",
-        zcbh: "F1181101",
-        name: "三相变频电源模块",
+        zcbh: "耐压绝缘测试仪",
+        name: "合配电箱",
       },
       machines: [
         {
-          district_id: "省中心（电科院）",
-          device_no: "46",
-          station_token: "A6",
-          model_number: "TM2-008",
-          company: "上海思创电力设备有限公司",
-          createtime: "2022-01-14 19:22",
-          experiment_ids: "19,18,3,10",
-          zcbh: "F1181101",
-          name: "三相变频电源模块",
+         district_id: "介电性能",
+        device_no: "低压成套开关设备和控制设备",
+        station_token: "GB/T 7251.12.2013",
+        model_number: "AN9643M",
+        company: "/",
+        createtime: "/",
+        experiment_ids: "19,18,3,10",
+        zcbh: "耐压绝缘测试仪",
+        name: "合配电箱",
         },
         {
-          district_id: "省中心（电科院）",
-          device_no: "46",
-          station_token: "A6",
-          model_number: "TM2-008",
-          company: "上海思创电力设备有限公司",
+          district_id: "工频过电压保护",
+          device_no: "低压成套开关设备和控制设备",
+          station_token: "GB/T 7251.12.2013",
+          model_number: "/",
+          company: "/",
           createtime: "2022-01-14 19:22",
           experiment_ids: "19,18,3,10",
-          zcbh: "F1181101",
-          name: "变压器测量切换线模块",
+          zcbh: "/",
+          name: "合配电箱",
         },
         {
-          district_id: "省中心（电科院）",
-          device_no: "46",
-          station_token: "A6",
-          model_number: "TM2-008",
-          company: "上海思创电力设备有限公司",
+          district_id: "机械碰撞实验",
+          device_no: "电器设备外壳对外界机械碰撞的防护等级(IK代码)",
+          station_token: "GB/T 20138-2006",
+          model_number: "/",
+          company: "符合",
           createtime: "2022-01-14 19:22",
           experiment_ids: "19,18,3,10",
-          zcbh: "F1181101",
-          name: "电压电流测试仪",
+          zcbh: "碰撞试验台",
+          name: "合配电箱",
+        },
+        {
+          district_id: "工频参考电压实验",
+          device_no: "交流无间隙金属氧化物避雷器",
+          station_token: "GB/T 11032-2020",
+          model_number: "RCM2500",
+          company: "符合",
+          createtime: "2022-8-24",
+          experiment_ids: "19,18,3,10",
+          zcbh: "氧化锌阻性电流测试仪",
+          name: "交流避雷器",
+        },
+        {
+          district_id: "密封实验",
+          device_no: "交流无间隙金属氧化物避雷器",
+          station_token: "GB/T 20138-2006",
+          model_number: "JUS-10",
+          company: "符合",
+          createtime: "2023-5-29",
+          experiment_ids: "19,18,3,10",
+          zcbh: "密封实验装置(水煮箱)",
+          name: "交流避雷器",
+        },
+         {
+          district_id: "冲击载荷实验",
+          device_no: "低压成套开关设备和控制设备",
+          station_token: "GB/T 7251.1-2013",
+          model_number: "YWX-10",
+          company: "符合",
+          createtime: "/",
+          experiment_ids: "19,18,3,10",
+          zcbh: "电能计量箱表外壳冲击实验机",
+          name: "电能计量箱",
         },
       ],
+      // mergeItems:[
+      //   {columnIndex:0,apanArr:[],pos:0,prop:"name"}
+      // ],
       listQuery: {
         name: "",
         district: "",
@@ -276,7 +323,7 @@ export default {
           "苏中分中心",
           "省中心（电科院）",
         ],
-        stationOptions: ["46", "48"],
+        stationOptions: ["工位一", "工位二","工位三"],
       },
     };
   },
